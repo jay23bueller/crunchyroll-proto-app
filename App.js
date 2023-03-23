@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { IntroView, ScrollingTitleView } from "./MiddleViews";
+import { IntroView, ScrollingTitleView, ScrollingContinueView } from "./MiddleViews";
 
 export default function App() {
   return (
@@ -124,6 +124,7 @@ const MiddleView = () => {
     <ScrollView contentContainerStyle={middleViewStyles.outerContainer}>
       <IntroView description={description} title={title}></IntroView>
       <ScrollingTitleView section={"Top Picks For You"}></ScrollingTitleView>
+      <ScrollingContinueView></ScrollingContinueView>
       {nums.map((v, i) => (
         <Text key={i}>{v}</Text>
       ))}
