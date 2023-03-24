@@ -1,11 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { IntroView, ScrollingTitleView, ScrollingContinueView } from "./MiddleViews";
+import { IntroView, ScrollingTitleView, ScrollingContinueView, ScrollingFromYourWatchlistView } from "./MiddleViews";
 
 export default function App() {
   return (
-    <View style={{ position: "relative", height: "100%", width: "100%" }}>
+    <View style={{ position: "relative", height: "100%", width: "100%", backgroundColor:'black' }}>
       <TopView></TopView>
       <MiddleView></MiddleView>
       <BottomView></BottomView>
@@ -119,15 +119,14 @@ const MiddleView = () => {
   const description =
     "Around the end of the millennium, Viking, the mightiest but atrocious tibe, had been out breaking everywhere. Thorfinn, the son of the greatest warrior, lived his chil...";
   const title = "VINLAND SAGA";
-  console.log(nums);
+
   return (
-    <ScrollView contentContainerStyle={middleViewStyles.outerContainer}>
+    <ScrollView contentContainerStyle={middleViewStyles.outerContainer} indicatorStyle={'white'} bouncesZoom={'true'}>
       <IntroView description={description} title={title}></IntroView>
-      <ScrollingTitleView section={"Top Picks For You"}></ScrollingTitleView>
+      <ScrollingTitleView section={("Top Picks For You").toUpperCase()}></ScrollingTitleView>
       <ScrollingContinueView></ScrollingContinueView>
-      {nums.map((v, i) => (
-        <Text key={i}>{v}</Text>
-      ))}
+      <ScrollingFromYourWatchlistView></ScrollingFromYourWatchlistView>
+
     </ScrollView>
   );
 };
@@ -137,5 +136,6 @@ const middleViewStyles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     display: "flex",
+    backgroundColor: 'black'
   },
 });
