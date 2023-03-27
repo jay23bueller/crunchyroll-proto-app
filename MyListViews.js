@@ -163,14 +163,16 @@ const MyListView = () =>
     // </View>
     <NavigationContainer independent={true} >
         <ListTab.Navigator 
+    
             style={{backgroundColor:'black'}}
             initialRouteName={"Watchlist"} 
             initialLayout={{width:Dimensions.get('screen').width, height:'100%'}}
             
             screenOptions={{
+                
                 tabBarStyle:{
                     backgroundColor:'black',
-                    paddingTop: 40,
+
                     
                 },
                 tabBarLabelStyle:{
@@ -197,10 +199,11 @@ const MyListView = () =>
                     backgroundColor:'#E47D3A'
 
                 },
-                animationEnabled:false
+                
             }}
             
         >
+        
         <ListTab.Screen name="Watchlist" component={WatchListView}/>
         <ListTab.Screen name="History" component={HistoryView}/>
         <ListTab.Screen name="Crunchy Lists" component={CrunchyListView}/>
