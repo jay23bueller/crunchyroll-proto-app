@@ -1,90 +1,58 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
+import { useState } from 'react';
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { IntroView, ScrollingTitleView, ScrollingContinueView, ScrollingFromYourWatchlistView } from "./MiddleViews";
+import { HomeView } from "./HomeViews";
+import { MyListView } from './MyListViews';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { LogBox } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={{ position: "relative", height: "100%", width: "100%", backgroundColor:'black' }}>
-      <TopView></TopView>
-      <MiddleView></MiddleView>
-      <BottomView></BottomView>
-    </View>
-  );
+LogBox.ignoreLogs(['Sending `onAnimatedValueUpdate` with no listeners registered.']);
+
+const routeToIconNameMapping = {
+  'Home': 'home',
+  'My Lists': 'bookmark',
+  'Browse': 'grid',
+  'Simulcasts': 'tv',
+  'Account': 'smile'
 }
 
-const TopView = () => {
-  return (
-    <View style={topViewStyles.outerContainer}>
-      <View style={topViewStyles.innerLeftContainer}>
-        <Image
-          style={{ height: 30, width: 120 }}
-          source={require("./Images/crunchyroll_icon.png")}
-          resizeMode={"contain"}
-        />
-      </View>
-
-      <View style={topViewStyles.innerRightContainer}>
-        <Feather style={topViewStyles.innerRightIcon} name={"cast"} size={30} />
-        <Feather
-          style={topViewStyles.innerRightIcon}
-          name={"search"}
-          size={30}
-        />
-      </View>
-    </View>
-  );
-};
-
-const topViewStyles = StyleSheet.create({
-  outerContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    position: "absolute",
-    left: 0,
-    width: "100%",
-    height: "13%",
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 60,
-    backgroundColor: "black",
-    zIndex: 1,
-  },
-  innerLeftContainer: {
-    marginRight: "auto",
-  },
-  innerRightContainer: {
-    marginLeft: "auto",
-    color: "white",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  innerRightIcon: {
-    margin: 4,
-    color: "white",
-  },
-});
-
-const BottomView = () => {
+const BottomView = ({ state, navigation }) => {
   return (
     <View style={bottomViewStyles.outerContainer}>
-      <BottomItem iconName={"home"} description={"Home"}></BottomItem>
-      <BottomItem iconName={"bookmark"} description={"My Lists"}></BottomItem>
-      <BottomItem iconName={"grid"} description={"Browse"}></BottomItem>
-      <BottomItem iconName={"tv"} description={"Simulcasts"}></BottomItem>
-      <BottomItem iconName={"smile"} description={"Account"}></BottomItem>
+
+      {state.routes.map((route, index) => {
+        const label = route.name;
+        const isFocused = state.index === index;
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        return (
+          <BottomItem key={route.key} iconName={routeToIconNameMapping[route.name]} focused={isFocused} pressEvent={onPress} description={label} />
+        )
+
+      })}
     </View>
   );
 };
 
 const BottomItem = (props) => {
   return (
-    <View style={bottomViewStyles.bottomElem}>
-      <Feather name={props.iconName} size={25} color={"white"} />
+    <Pressable style={bottomViewStyles.bottomElem} onPress={props.pressEvent}>
+
+      <Feather name={props.iconName} size={25} color={props.focused ? '#E47D3A' : 'white'} />
       <Text style={bottomViewStyles.bottomElemText}> {props.description}</Text>
-    </View>
+
+    </Pressable>
+
   );
 };
 
@@ -93,15 +61,11 @@ const bottomViewStyles = StyleSheet.create({
     display: "flex",
     justifyContent: "space-between",
     flexDirection: "row",
-    position: "absolute",
-    left: 0,
-    bottom: 0,
     backgroundColor: "#23252A",
     width: "100%",
     height: "10%",
     paddingLeft: 15,
     paddingRight: 15,
-    zIndex: 1,
     paddingTop: 10,
     alignItems: "flex-start",
   },
@@ -114,28 +78,28 @@ const bottomViewStyles = StyleSheet.create({
   bottomElemText: { fontSize: 9, marginTop: 5, color: "white" },
 });
 
-const MiddleView = () => {
-  const nums = Array.from({ length: 100 }, (_, k) => k);
-  const description =
-    "Around the end of the millennium, Viking, the mightiest but atrocious tibe, had been out breaking everywhere. Thorfinn, the son of the greatest warrior, lived his chil...";
-  const title = "VINLAND SAGA";
+
+
+const Tab = createBottomTabNavigator();
+
+
+
+export default function App() {
+
 
   return (
-    <ScrollView contentContainerStyle={middleViewStyles.outerContainer} indicatorStyle={'white'} bouncesZoom={'true'}>
-      <IntroView description={description} title={title}></IntroView>
-      <ScrollingTitleView section={("Top Picks For You").toUpperCase()}></ScrollingTitleView>
-      <ScrollingContinueView></ScrollingContinueView>
-      <ScrollingFromYourWatchlistView></ScrollingFromYourWatchlistView>
 
-    </ScrollView>
+    <NavigationContainer>
+      <Tab.Navigator
+        initalRouteName={"Home"}
+        screenOptions={{ headerShown: false }}
+        tabBar={(props) => <BottomView {...props} />}
+        
+      >
+        <Tab.Screen name="Home" component={HomeView} />
+        <Tab.Screen name="My Lists" component={MyListView} />
+      </Tab.Navigator>
+    </NavigationContainer>
+
   );
-};
-
-const middleViewStyles = StyleSheet.create({
-  outerContainer: {
-    alignItems: "center",
-    width: "100%",
-    display: "flex",
-    backgroundColor: 'black'
-  },
-});
+}
