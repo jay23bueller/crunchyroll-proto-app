@@ -6,6 +6,7 @@ import { MyListView } from "./MyListViews";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LogBox } from "react-native";
+import { AccountView } from "./AboutViews";
 import "react-native-gesture-handler";
 
 LogBox.ignoreLogs([
@@ -130,6 +131,7 @@ export default function App() {
           options={({ route }) => ({ title: "" })}
         />
         <Tab.Screen name="My Lists" component={MyListView} />
+        <Tab.Screen name="Account" component={AccountView}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
