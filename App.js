@@ -87,7 +87,6 @@ const bottomViewStyles = StyleSheet.create({
   bottomElemText: { fontSize: 9, marginTop: 5, color: "white" },
 });
 
-
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -96,15 +95,23 @@ export default function App() {
       <Tab.Navigator
         initalRouteName={"Home"}
         screenOptions={{
-          headerTitleStyle:{color:'white'},
-          headerStyle:{backgroundColor:'black',borderBottomColor:'#E47D3A', borderBottomWidth:2, shadowOpacity:0},
+          headerTitleStyle: { color: "white" },
+          headerStyle: {
+            backgroundColor: "black",
+            borderBottomColor: "#E47D3A",
+            borderBottomWidth: 2,
+            shadowOpacity: 0,
+          },
         }}
         tabBar={(props) => <BottomView {...props} />}
       >
-
-        <Tab.Screen options={{headerShown:false}} name="Home" component={HomeView}/>
+        <Tab.Screen
+          options={{ headerShown: false }}
+          name="Home"
+          component={HomeView}
+        />
         <Tab.Screen name="My Lists" component={MyListView} />
-        <Tab.Screen name="Account" component={AccountView}/>
+        <Tab.Screen name="Account" component={AccountView} />
       </Tab.Navigator>
     </NavigationContainer>
   );
