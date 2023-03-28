@@ -205,7 +205,7 @@ const accountSections = [
   new SectionInfo("Preferences", [
     new SectionDataItem("Audio Language", "About", "stack", "Japanese"),
     new SectionDataItem("Subtitles/CC Language", "About", "stack", "English"),
-    new SectionDataItem("Change Password", undefined, "switch", true),
+    new SectionDataItem("Show Closed Captions", undefined, "switch", true),
   ]),
   new SectionInfo("App Experience", [
     new SectionDataItem("Show Mature Content", undefined, "switch", true),
