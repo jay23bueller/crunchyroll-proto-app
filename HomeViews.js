@@ -536,7 +536,7 @@ const homeTopViewStyles = StyleSheet.create({
 
 const HomeMiddleView = () => {
   const introInfo = {
-    descripton:
+    description:
       "Around the end of the millennium, Viking, the mightiest but atrocious tibe, had been out breaking everywhere. Thorfinn, the son of the greatest warrior, lived his chil...",
     title: "VINLAND SAGA",
   };
@@ -549,10 +549,7 @@ const HomeMiddleView = () => {
     subDub: "Subtitled",
   };
 
-  const data = {
-    introView: IntroView,
-    ScrollingTitleView: ScrollingTitleView,
-  };
+
   return (
     <ScrollView
       contentContainerStyle={homeMiddleViewStyles.outerContainer}
