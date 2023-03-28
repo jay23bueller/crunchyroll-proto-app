@@ -6,7 +6,7 @@ import { MyListView } from "./MyListViews";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LogBox } from "react-native";
-import { AccountView } from "./AboutViews";
+import { AccountView } from "./AccountViews";
 import "react-native-gesture-handler";
 
 LogBox.ignoreLogs([
@@ -87,6 +87,7 @@ const bottomViewStyles = StyleSheet.create({
   bottomElemText: { fontSize: 9, marginTop: 5, color: "white" },
 });
 
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -95,41 +96,13 @@ export default function App() {
       <Tab.Navigator
         initalRouteName={"Home"}
         screenOptions={{
-          headerShown: true,
-          header: ({ navigation, route }) => {
-            if (route.name === "Home" && navigation.isFocused) {
-              return <View></View>;
-            } else {
-              return (
-                <View
-                  style={{
-                    backgroundColor: "black",
-                    width: Dimensions.get("screen").width,
-                    height: 80,
-                    paddingTop: 50,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      textAlign: "center",
-                      fontSize: 20,
-                    }}
-                  >
-                    {route.name}
-                  </Text>
-                </View>
-              );
-            }
-          },
+          headerTitleStyle:{color:'white'},
+          headerStyle:{backgroundColor:'black',borderBottomColor:'#E47D3A', borderBottomWidth:2, shadowOpacity:0},
         }}
         tabBar={(props) => <BottomView {...props} />}
       >
-        <Tab.Screen
-          name="Home"
-          component={HomeView}
-          options={({ route }) => ({ title: "" })}
-        />
+
+        <Tab.Screen options={{headerShown:false}} name="Home" component={HomeView}/>
         <Tab.Screen name="My Lists" component={MyListView} />
         <Tab.Screen name="Account" component={AccountView}/>
       </Tab.Navigator>

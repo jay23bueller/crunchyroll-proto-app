@@ -13,7 +13,7 @@ import {
 import { Feather, Entypo } from "@expo/vector-icons";
 
 
-const IntroView = (props) => {
+const IntroView = ({title,description}) => {
   return (
     <View style={introViewStyle.outerContainer}>
       <Image
@@ -26,15 +26,16 @@ const IntroView = (props) => {
           <Feather name="play" size={20}></Feather>
           <Text style={{ fontSize: 18 }}>WATCH NOW</Text>
         </TouchableOpacity>
-        <Text style={{ color: "white" }}>{props.description}</Text>
-        <Text style={{ color: "white", fontSize: 24, marginBottom: 10 }}>
-          {props.title}
+        <Text style={introViewStyle.introDescription}>{description}</Text>
+        <Text style={introViewStyle.introTitle}>
+          {title}
         </Text>
       </View>
 
     </View>
   );
 };
+
 
 const introViewStyle = StyleSheet.create({
   outerContainer: {
@@ -43,6 +44,7 @@ const introViewStyle = StyleSheet.create({
     display: "flex",
     flexDirection: "column-reverse",
     backgroundColor: 'black',
+
   },
   backgroundImageContainer: {
     position: 'absolute',
@@ -66,6 +68,14 @@ const introViewStyle = StyleSheet.create({
     padding: 12,
     marginTop: 10,
   },
+  introDescription: {
+    color:'white'
+  },
+  introTitle:{
+    color: "white", 
+    fontSize: 24, 
+    marginBottom: 10 
+  }
 });
 
 const ScrollingTitleView = (props) => {
@@ -125,15 +135,11 @@ const TitleView = ({title, type, subDubText}) => {
         resizeMode={"contain"}
       />
       <View
-        style={{
-          backgroundColor: "#263843",
-          width: 145,
-          justifyContent: "flex-start",
-        }}
+        style={titleViewStyle.bottonContainer}
       >
         <Text style={titleViewStyle.titleText}>{title}</Text>
 
-        <View style={{ flexDirection: "row", alignItems: 'center', paddingBottom: 10 }}>
+        <View style={titleViewStyle.descriptionContainer}>
           <View style={titleViewStyle.description}>
             <Text style={titleViewStyle.type}>{type}</Text>
             <Text style={titleViewStyle.subDub}>• {subDubText}</Text>
@@ -150,6 +156,16 @@ const titleViewStyle = StyleSheet.create({
   outerContainer: {
     marginLeft: 2,
     marginRight: 2,
+  },
+  bottonContainer: {
+    backgroundColor: "#263843",
+    width: 145,
+    justifyContent: "flex-start",
+  },
+  descriptionContainer:{ 
+    flexDirection: "row", 
+    alignItems: 'center', 
+    paddingBottom: 10 
   },
   titleText: {
     paddingTop: 5,
@@ -197,14 +213,7 @@ const ScrollingContinueView = () => {
   
   return (
     <View
-      style={{
-        backgroundColor: "black",
-        width: "100%",
-        height: 200,
-        paddingLeft: 5,
-        paddingRight: 5,
-        paddingBottom: 10,
-      }}
+      style={continueWatchingStyle.listContainer}
     >
       <FlatList
         horizontal={true}
@@ -217,16 +226,43 @@ const ScrollingContinueView = () => {
   );
 };
 
+const continueWatchingStyle = StyleSheet.create({
+  listContainer:{
+    backgroundColor: "black",
+    width: "100%",
+    height: 200,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingBottom: 10,
+  },
+  outerContainer:{
+    width: 360, 
+    marginLeft: 4, 
+    marginRight: 4 
+  },
+  backgroundImage:{
+    width: "100%",
+    opacity: 0.5,
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
+  infoContainer:{
+    width: "100%", 
+    padding: 12
+  },
+});
+
 const ContinueWatchingView = ({title,description,remainingTime}) => {
 
   return (
-    <View style={{ width: 360, marginLeft: 4, marginRight: 4 }}>
+    <View style={continueWatchingStyle.outerContainer}>
       <Image
         style={continueWatchingStyle.backgroundImage}
         source={require('./Images/One_Piece_Continue_Watching_Thumbnail.jpeg')}
         resizeMode={"cover"}
       />
-      <View style={{ width: "100%", padding: 12 }}>
+      <View style={continueWatchingStyle.infoContainer}>
         <View style={{ flexDirection: "row" }}>
           <Text style={{ color: "#b7b7b7", flex: 1 }}>{title}</Text>
           <Feather name={"more-vertical"} color={"white"} size={24}></Feather>
@@ -260,15 +296,6 @@ const ContinueWatchingView = ({title,description,remainingTime}) => {
   );
 };
 
-const continueWatchingStyle = StyleSheet.create({
-  backgroundImage:{
-    width: "100%",
-    opacity: 0.5,
-    position: "absolute",
-    top: 0,
-    left: 0,
-  }
-});
 
 const ScrollingFromYourWatchlistView = () => {
 
@@ -276,7 +303,14 @@ const ScrollingFromYourWatchlistView = () => {
 
   for(let i = 0; i < 6; i++)
   {
-    watchListItems[i] = i;
+    const watchListInfo = {
+      description: 'Continue: S1 E3',
+      type: 'Series',
+      subDub: 'Sub|Dub',
+      title: 'Aharen-san wa Hakarena',
+      key:i
+    }
+    watchListItems[i] = watchListInfo;
   }
 
   return (
@@ -285,7 +319,7 @@ const ScrollingFromYourWatchlistView = () => {
       <FlatList 
         horizontal={true}
         data={watchListItems}
-        renderItem={({item}) => <FromYourWatchListView key={item} />}
+        renderItem={({item}) => <FromYourWatchListView {...item} />}
       />
 
     </View>
@@ -294,19 +328,19 @@ const ScrollingFromYourWatchlistView = () => {
 
 const fromYourWatchListOuterContainer = StyleSheet.compose(scrollingViewWithTitle.outerContainer, scrollingViewWithTitleSmall.outerContainer);
 
-const FromYourWatchListView = () => {
+const FromYourWatchListView = ({title, description, type, subDub}) => {
   return (
     <View style={fromYourWatchlistStyle.outerContainer}>
       <Image style={fromYourWatchlistStyle.upperImage} source={require('./Images/AharenSanWatchlist_image.jpeg')} resizeMode={'cover'} />
       <View style={fromYourWatchlistStyle.textContainer}>
         <View style={fromYourWatchlistStyle.upperTextContainer}>
-          <Text style={fromYourWatchlistStyle.titleStyle}>Aharen-san wa Hakarena</Text>
-          <Text style={fromYourWatchlistStyle.descriptionStyle}>Continue: S1 E3</Text>
+          <Text style={fromYourWatchlistStyle.titleStyle}>{title}</Text>
+          <Text style={fromYourWatchlistStyle.descriptionStyle}>{description}</Text>
         </View>
 
         <View style={{ flexDirection: 'row', marginTop: 5 }}>
-          <Text style={fromYourWatchlistStyle.type}>Series</Text>
-          <Text style={fromYourWatchlistStyle.subDub}>•  Sub|Dub</Text>
+          <Text style={fromYourWatchlistStyle.type}>{type}</Text>
+          <Text style={fromYourWatchlistStyle.subDub}>•  {subDub}</Text>
         </View>
       </View>
     </View>
@@ -352,7 +386,7 @@ const fromYourWatchlistStyle = StyleSheet.create({
   },
 });
 
-const RecommendedView = () => {
+const RecommendedView = ({title, description, type, subDub}) => {
   return (
     <View style={recommnededViewStyle.outerContainer}>
       <Image style={recommnededViewStyle.upperImage} source={require('./Images/My_Hero_Recommended_Top_Image.jpeg')} resizeMode={'cover'} />
@@ -367,15 +401,15 @@ const RecommendedView = () => {
         <View style={{ paddingRight: 5, marginLeft: 155, paddingTop: 10, flex: 1 }}>
           {/* title and description container */}
           <View style={recommnededViewStyle.informationContainer}>
-            <Text style={recommnededViewStyle.title}>My Hero Academia</Text>
-            <Text style={recommnededViewStyle.description}>Izuku has dreamt of being a hero all his life—a lofty goal for anyone, but especially...</Text>
+            <Text style={recommnededViewStyle.title}>{title}</Text>
+            <Text style={recommnededViewStyle.description}>{description}</Text>
           </View>
 
           {/* Row container for type-dub and button */}
           <View style={recommnededViewStyle.infoContainer}>
             <View style={recommnededViewStyle.additionalInfo}>
-              <Text style={recommnededViewStyle.type}>Series</Text>
-              <Text style={recommnededViewStyle.subDub}>• Subtitled</Text>
+              <Text style={recommnededViewStyle.type}>{type}</Text>
+              <Text style={recommnededViewStyle.subDub}>• {subDub}</Text>
             </View>
             <Feather name={'more-vertical'} size={20} color={'white'}></Feather>
           </View>
@@ -448,6 +482,8 @@ const homeTopViewStyles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 50,
+    borderBottomColor: '#E47D3A',
+    borderBottomWidth:2,
   
     backgroundColor: "black",
   },
@@ -468,20 +504,30 @@ const homeTopViewStyles = StyleSheet.create({
 });
 
 const HomeMiddleView = () => {
-  const description =
-    "Around the end of the millennium, Viking, the mightiest but atrocious tibe, had been out breaking everywhere. Thorfinn, the son of the greatest warrior, lived his chil...";
-  const title = "VINLAND SAGA";
+  
+  const introInfo = {
+    descripton:"Around the end of the millennium, Viking, the mightiest but atrocious tibe, had been out breaking everywhere. Thorfinn, the son of the greatest warrior, lived his chil...",
+    title:"VINLAND SAGA"
+  }
+
+  const recommendedInfo = {
+    title: "My Hero Academia",
+    description: "Izuku has dreamt of being a hero all his life—a lofty goal for anyone, but especially...",
+    type: 'Series',
+    subDub: 'Subtitled'
+  }
+  
   const data = {
     'introView': IntroView,
     'ScrollingTitleView':ScrollingTitleView
   }
   return (
     <ScrollView contentContainerStyle={homeMiddleViewStyles.outerContainer} indicatorStyle={'white'} bouncesZoom={'true'}>
-      <IntroView description={description} title={title}></IntroView>
+      <IntroView {...introInfo}></IntroView>
       <ScrollingTitleView section={("Top Picks For You").toUpperCase()}></ScrollingTitleView>
       <ScrollingContinueView></ScrollingContinueView>
       <ScrollingFromYourWatchlistView></ScrollingFromYourWatchlistView>
-      <RecommendedView></RecommendedView>
+      <RecommendedView {...recommendedInfo}></RecommendedView>
 
     </ScrollView>
   );
